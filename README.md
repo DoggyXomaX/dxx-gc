@@ -2,8 +2,8 @@
 
 Just testing of these functions:
 ```c
-gc_malloc(size_t);
-gc_calloc(size_t, size_t);
-gc_free(void*);
-gc_freeall(void);
+void *gc_malloc(size_t);
+void *gc_calloc(size_t, size_t);
+void gc_free(void*);
+void gc_freeall(void);
 ```
