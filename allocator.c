@@ -45,8 +45,19 @@ void *gc_calloc(size_t size, size_t count) {
 
 void gc_free(void *pointer) {
     gc_debug("GC_DEBUG: FREE\n");
+
+    if (gc.elements == NULL) {
+        gc_debug("GC_DEBUG: GC ELEMENTS IS EMPTY\n");
+        return;
+    }
+
+    if (pointer == NULL) {
+        gc_debug("GC_DEBUG: INPUT POINTER IS NULL\n");
+        return;
+    }
+
     for (size_t i = 0; i < gc.size; i++) {
-        gc_debug("GC_DEBUG: SEARCHING POINTER: %u\n", i);
+        gc_debug("GC_DEBUG: SEARCHING POINTER ON: %u\n", i);
         if (pointer != gc.elements[i].pointer) continue;
 
         // Удаляем указатель
@@ -81,8 +92,20 @@ void gc_free(void *pointer) {
 
 void gc_freeall() {
     gc_debug("GC_DEBUG: FREEALL\n");
+
+    if (gc.elements == NULL) {
+        gc_debug("GC_DEBUG: GC ELEMENTS IS EMPTY\n");
+        return;
+    }
+
     for (int64_t i = gc.size - 1; i >= 0; i--) {
         gc_debug("GC_DEBUG: FREE %u ELEMENT\n", i);
+
+        if (gc.elements[i].pointer == NULL) {
+            gc_debug("GC_DEBUG: POINTER IS NULL\n");
+            continue;
+        }
+
         free(gc.elements[i].pointer);
     }
     gc_debug("GC_DEBUG: FREE ELEMENTS BUFFER\n");
